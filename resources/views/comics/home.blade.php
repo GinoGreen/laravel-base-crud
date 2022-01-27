@@ -21,7 +21,7 @@
                   <td>{{ $comic->title }}</td>
                   <td>{{ $comic->series }}</td>
                   <td>{{ number_format($comic->price, 2, ',', '') }}€</td>
-                  <td><button class="btn btn-warning"><a href="">Show</a></button></td>
+                  <td><button class="btn btn-warning"><a href="{{ route('comics.show', $comic) }}">Show</a></button></td>
                </tr>
             @endforeach
          </tbody>
