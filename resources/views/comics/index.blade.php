@@ -11,7 +11,7 @@
                <th scope="col">Title</th>
                <th scope="col">Series</th>
                <th scope="col">Price</th>
-               <th scope="col">Action</th>
+               <th scope="col">Actions</th>
             </tr>
          </thead>
          <tbody>
@@ -21,7 +21,14 @@
                   <td>{{ $comic->title }}</td>
                   <td>{{ $comic->series }}</td>
                   <td>{{ number_format($comic->price, 2, ',', '') }}€</td>
-                  <td><button class="btn btn-warning"><a href="{{ route('comics.show', $comic) }}">Show</a></button></td>
+                  <td class="d-flex">
+                     <button class="btn btn-warning mr-3"><a href="{{ route('comics.show', $comic) }}">Show</a></button>
+                     <form action="{{ route('comics.destroy', $comic) }}" action="post">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                     </form>
+                  </td>
                </tr>
             @endforeach
          </tbody>
