@@ -23,7 +23,7 @@
                   <td>{{ number_format($comic->price, 2, ',', '') }}€</td>
                   <td class="d-flex">
                      <button class="btn btn-warning mr-3"><a href="{{ route('comics.show', $comic) }}">Show</a></button>
-                     <form action="{{ route('comics.destroy', $comic) }}" action="post">
+                     <form action="{{ route('comics.destroy', $comic) }}" method="post">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger">Delete</button>
