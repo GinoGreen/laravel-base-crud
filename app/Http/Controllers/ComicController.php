@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Comic;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ComicController extends Controller
 {
@@ -26,7 +27,7 @@ class ComicController extends Controller
      */
     public function create()
     {
-        //
+        return view('comics.create');
     }
 
     /**
@@ -37,7 +38,15 @@ class ComicController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+
+        $new_comic = new Comic();
+        $new_comic->fill($data);
+        $new_comic->slug = Str::slug($data['title'], '-');
+        $new_comic->save();
+
+        return redirect()->route('comics.show', $new_comic);
+
     }
 
     /**
@@ -49,8 +58,11 @@ class ComicController extends Controller
     public function show($id)
     {
         $comic = Comic::find($id);
+        if ($comic) {
+            return view('comics.show', compact('comic'));
+        }
         
-        return view('comics.show', compact('comic'));
+        abort(404, 'Fumetto insistente');
     }
 
     /**
@@ -61,7 +73,12 @@ class ComicController extends Controller
      */
     public function edit($id)
     {
-        //
+        $comic = Comic::find($id);
+        if ($comic) {
+            return view('comics.edit', compact('comic'));
+        }
+        
+        abort(404, 'Fumetto insistente');
     }
 
     /**
@@ -71,9 +88,13 @@ class ComicController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Comic $comic)
     {
-        //
+        $data = $request->all();
+        $data['slug'] = Str::slug($data['title'], '-');
+        $comic->update($data);
+
+        return redirect()->route('comics.show', $comic);
     }
 
     /**
@@ -86,4 +107,6 @@ class ComicController extends Controller
     {
         //
     }
+
+    // private function
 }
