@@ -101,20 +101,17 @@ class ComicController extends Controller
     }
 
     private function makeSlugOf($string) {
-
         $sluggedString = Str::slug($string, '-');
-        
         return $this->setUniqueString($sluggedString);
     }
+
     private function setUniqueString($sluggedString) {
-        $array_comics = Comic::all();
-        $original_sluggedString = $sluggedString;
-        $count = 0;
-        foreach ($array_comics as $comic) {
-            if ($sluggedString == $comic->slug) {
-                $sluggedString = $original_sluggedString . '-' . ++$count;
-            }
-        }
+        $slugs = Comic::select('slug')
+                            ->where('slug', $sluggedString)
+                            ->get();
+
+        if ($slugs) return $sluggedString = $sluggedString . '-' . count($slugs);
+
         return $sluggedString;
     }
 }
