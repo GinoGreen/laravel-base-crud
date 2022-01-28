@@ -40,7 +40,7 @@ class ComicController extends Controller
         $data = $request->all();
         $new_comic = new Comic();
         $new_comic->fill($data);
-        $new_comic->slug = Str::slug($data['title'], '-');
+        $new_comic->slug = $this->makeSlugOf($data['title']);
         $new_comic->save();
         return redirect()->route('comics.show', $new_comic);
 
@@ -82,7 +82,7 @@ class ComicController extends Controller
     public function update(Request $request, Comic $comic)
     {
         $data = $request->all();
-        $data['slug'] = Str::slug($data['title'], '-');
+        $data['slug'] = $this->makeSlugOf($data['title']);
         $comic->update($data);
         return redirect()->route('comics.show', $comic);
     }
@@ -99,5 +99,7 @@ class ComicController extends Controller
         return redirect()->route('comics.index');
     }
 
-    // private function
+    private function makeSlugOf($string) {
+        return Str::slug($string, '-');
+    }
 }
