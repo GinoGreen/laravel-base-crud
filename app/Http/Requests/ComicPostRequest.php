@@ -27,7 +27,7 @@ class ComicPostRequest extends FormRequest
             'title' => 'required|max:50|min:3',
             'price' => 'required',
             'imgUrl' => 'required|max:255|min:6',
-            'sale_date' => 'required',
+            'sale_date' => 'required|date',
         ];
     }
 
@@ -42,6 +42,7 @@ class ComicPostRequest extends FormRequest
             'imgUrl.max' => 'URL massimo :max caratteri',
             'imgUrl.min' => 'URL almeno :min caratteri',
             'sale_date.required' => 'Data obbligatoria',
+            'sale_date.date' => 'Data potato',
         ];
     }
 }
