@@ -68,7 +68,7 @@
          <div class="mb-3">
             <label for="sale_date" class="form-label">Data</label>
             <input 
-               type="text" 
+               type="date" 
                name="sale_date" 
                value="{{ $comic->sale_date }}" 
                class="
@@ -87,7 +87,7 @@
          <div class="mb-3">
             <label for="imgUrl" class="form-label">URL Immagine</label>
             <input 
-               type="text" 
+               type="url" 
                name="imgUrl" 
                value="{{ $comic->imgUrl }}" 
                class="
@@ -107,7 +107,7 @@
             <label for="type" class="form-label">Tipo</label>
             <input 
                type="text" 
-               name="type" 
+               name="type"
                value="{{ $comic->type }}" 
                class="
                   form-control 
