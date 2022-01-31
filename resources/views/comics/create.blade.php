@@ -85,9 +85,9 @@
                placeholder="Inserisci data"
                value="{{old('sale_date')}}"
             >
-            @error('sale_date')
-               <p class="invalid-feedback">{{$message}}</p>
-            @enderror
+               @error('sale_date')
+                  <p class="invalid-feedback">{{$message}}</p>
+               @enderror
          </div>
          <div class="mb-3">
             <label for="imgUrl" class="form-label">URL Immagine</label>
