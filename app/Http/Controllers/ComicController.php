@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Comic;
+use App\Http\Requests\ComicPostRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -35,35 +36,14 @@ class ComicController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ComicPostRequest $request)
     {
-
-        $request->validate(
-            [
-                'title' => 'required|max:50|min:3',
-                'price' => 'required',
-                'imgUrl' => 'required|max:255|min:6',
-                'sale_date' => 'required',
-            ],
-            [
-                'title.required' => 'Titolo obbligatorio',
-                'title.max' => 'Titolo massimo :max caratteri',
-                'title.min' => 'Titolo almeno :min caratteri',
-                'price.required' => 'Prezzo obbligatorio',
-                'imgUrl.required' => 'URL obblicatoria',
-                'imgUrl.max' => 'URL massimo :max caratteri',
-                'imgUrl.min' => 'URL almeno :min caratteri',
-                'sale_date.required' => 'Data obbligatoria',
-            ],
-        );
-
         $data = $request->all();
         $new_comic = new Comic();
         $new_comic->fill($data);
         $new_comic->slug = $this->makeSlugOf($data['title']);
         $new_comic->save();
         return redirect()->route('comics.show', $new_comic);
-
     }
 
     /**
@@ -99,28 +79,8 @@ class ComicController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Comic $comic)
+    public function update(ComicPostRequest $request, Comic $comic)
     {
-
-        $request->validate(
-            [
-                'title' => 'required|max:50|min:3',
-                'price' => 'required',
-                'imgUrl' => 'required|max:255|min:6',
-                'sale_date' => 'required',
-            ],
-            [
-                'title.required' => 'Titolo obbligatorio',
-                'title.max' => 'Titolo massimo :max caratteri',
-                'title.min' => 'Titolo almeno :min caratteri',
-                'price.required' => 'Prezzo obbligatorio',
-                'imgUrl.required' => 'URL obblicatoria',
-                'imgUrl.max' => 'URL massimo :max caratteri',
-                'imgUrl.min' => 'URL almeno :min caratteri',
-                'sale_date.required' => 'Data obbligatoria',
-            ],
-        );
-
         $data = $request->all();
         $data['slug'] = $this->makeSlugOf($data['title']);
         $comic->update($data);
