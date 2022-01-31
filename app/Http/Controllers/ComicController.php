@@ -15,7 +15,7 @@ class ComicController extends Controller
      */
     public function index()
     {
-        $comics = Comic::paginate(5);
+        $comics = Comic::orderBy('id', 'desc')->paginate(5);
         return view('comics.index', compact('comics'));
     }
 
@@ -37,6 +37,26 @@ class ComicController extends Controller
      */
     public function store(Request $request)
     {
+
+        $request->validate(
+            [
+                'title' => 'required|max:50|min:3',
+                'price' => 'required',
+                'imgUrl' => 'required|max:255|min:6',
+                'sale_date' => 'required',
+            ],
+            [
+                'title.required' => 'Titolo obbligatorio',
+                'title.max' => 'Titolo massimo :max caratteri',
+                'title.min' => 'Titolo almeno :min caratteri',
+                'price.required' => 'Prezzo obbligatorio',
+                'imgUrl.required' => 'URL obblicatoria',
+                'imgUrl.max' => 'URL massimo :max caratteri',
+                'imgUrl.min' => 'URL almeno :min caratteri',
+                'sale_date.required' => 'Data obbligatoria',
+            ],
+        );
+
         $data = $request->all();
         $new_comic = new Comic();
         $new_comic->fill($data);
@@ -97,7 +117,7 @@ class ComicController extends Controller
     public function destroy(Comic $comic)
     {
         $comic->delete();
-        return redirect()->route('comics.index');
+        return redirect()->route('comics.index')->with('delete', "Il fumetto $comic->title é stato eliminato");
     }
 
     private function makeSlugOf($string) {
