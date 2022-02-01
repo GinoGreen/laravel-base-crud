@@ -73,7 +73,7 @@
          <div class="mb-3">
             <label for="sale_date" class="form-label">Data</label>
             <input 
-               type="text" 
+               type="date" 
                name="sale_date" 
                class="
                   form-control 
@@ -92,7 +92,7 @@
          <div class="mb-3">
             <label for="imgUrl" class="form-label">URL Immagine</label>
             <input 
-               type="text" 
+               type="url" 
                name="imgUrl" 
                class="
                   form-control 
