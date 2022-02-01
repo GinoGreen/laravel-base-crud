@@ -17,6 +17,8 @@ class ComicController extends Controller
     public function index()
     {
         $comics = Comic::orderBy('id', 'desc')->paginate(5);
+        // $slugComic = $this->search('potato-9');
+        // dump($slugComic[0]->slug);
         return view('comics.index', compact('comics'));
     }
 
@@ -43,6 +45,7 @@ class ComicController extends Controller
         $new_comic->fill($data);
         $new_comic->slug = $this->makeSlugOf($data['title']);
         $new_comic->save();
+
         return redirect()->route('comics.show', $new_comic);
     }
 
@@ -100,17 +103,27 @@ class ComicController extends Controller
     }
 
     private function makeSlugOf($string) {
-        $sluggedString = Str::slug($string, '-');
-        return $this->setUniqueString($sluggedString);
+        $slug = Str::slug($string, '-');
+        return $this->setUniqueSlug($slug);
     }
 
-    private function setUniqueString($sluggedString) {
-        $slugs = Comic::select('slug')
-                            ->where('slug', $sluggedString)
-                            ->get();
+    private function setUniqueSlug($slug) {
+        $foundSlug = $this->search($slug);
+        $originalSlug = $slug;
+        $count = 1;
+        while (isset($foundSlug[0]->slug)) {
+            $slug = $originalSlug . '-' . $count;
+            $count++;
+            $foundSlug = $this->search($slug);
+        }
 
-        if ($slugs) return $sluggedString = $sluggedString . '-' . count($slugs);
-
-        return $sluggedString;
+        return $slug;
     }
+
+    private function search($slug) {
+        return Comic::select('slug')
+                        ->where('slug', $slug)
+                        ->get();
+    }
+
 }
